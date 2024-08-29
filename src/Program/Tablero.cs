@@ -1,26 +1,21 @@
 namespace Ucu.Poo.GameOfLife;
-
-using System.IO;
-
-public static class Tablero
+public class Tablero
 {
-    // Carga el tablero desde un archivo de texto y lo convierte en una matriz bidimensional de booleanos
-    public static bool[,] CargarTablero(string rutaArchivo)
+    private bool[,] _estado;
+
+    public Tablero(bool[,] estadoInicial)
     {
-        string[] lineasContenido = File.ReadAllLines(rutaArchivo); // Lee todas las líneas del archivo
-        int ancho = lineasContenido[0].Length; // Determina el ancho del tablero basado en la longitud de la primera línea
-        int altura = lineasContenido.Length; // Determina la altura del tablero basado en el número de líneas
-        bool[,] tablero = new bool[ancho, altura]; // Crea una matriz para almacenar el tablero
+        _estado = estadoInicial;    // Asigna el estado inicial al tablero
+    }
 
-        // Recorre cada línea del archivo para poblar la matriz tablero
-        for (int y = 0; y < altura; y++)
-        {
-            for (int x = 0; x < ancho; x++)
-            {
-                tablero[x, y] = lineasContenido[y][x] == '1'; // Asigna verdadero si el carácter es '1' (celda viva), de lo contrario, falso (celda muerta)
-            }
-        }
+    public bool[,] ObtenerEstado()
+    {
+        return _estado;     // Retorna la matriz que representa el estado del tablero
+    }
 
-        return tablero; // Retorna el tablero cargado
+    public void ActualizarEstado(bool[,] nuevoEstado)
+    {
+        _estado = nuevoEstado;      // Reemplaza el estado actual con el nuevo estado
     }
 }
+

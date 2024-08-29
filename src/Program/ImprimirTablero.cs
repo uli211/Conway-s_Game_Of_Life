@@ -1,58 +1,39 @@
-using System;
-using System.Text;
-using System.Threading;
-
 namespace Ucu.Poo.GameOfLife
 {
+    using System;
+    using System.Text;      //incluye clases para manejar y manipular textos, como StringBuilder.
+    using System.Threading; // proporciona clases y métodos para trabajar con subprocesos (threads) y operaciones relacionadas con la sincronización.
+
     public class ImprimirTablero
     {
-        private readonly Logica logicaJuego; // Referencia a la lógica del juego para obtener el tablero actual
+        private readonly Logica logica; // Lógica del juego
 
-        private static readonly object
-            objetoBloqueo = new object(); // Objeto para sincronización de hilos al imprimir en consola
-
-        // Constructor que inicializa la clase con la lógica del juego
-        public ImprimirTablero(Logica logica)
+        public ImprimirTablero(Logica logicaJuego)
         {
-            logicaJuego = logica; // Asigna la lógica del juego al campo logicaJuego
+            logica = logicaJuego; // Recibe la lógica del juego
         }
 
-        // Método que imprime continuamente el tablero en la consola
-        public void MostrarTablero()
+        public void Imprimir()
         {
-            int anchoConsola = Console.WindowWidth; // Obtiene el ancho actual de la consola
-            while (true) // Bucle infinito para actualizar e imprimir el tablero
+            while (true)
             {
-                lock (objetoBloqueo) // Asegura que solo un hilo pueda acceder a este bloque a la vez
+                bool[,] tablero = logica.ObtenerTablero(); // Obtiene el estado actual del tablero
+                StringBuilder s = new StringBuilder();
+
+                for (int i = 0; i < tablero.GetLength(0); i++)
                 {
-                    Console.Clear(); // Limpia la consola antes de imprimir el tablero
-                    bool[,] tablero = logicaJuego.ObtenerTablero(); // Obtiene el estado actual del tablero
-                    int ancho = tablero.GetLength(0); // Obtiene el ancho del tablero
-                    int altura = tablero.GetLength(1); // Obtiene la altura del tablero
-                    StringBuilder
-                        s = new StringBuilder(); // Crea un objeto StringBuilder para construir la salida de texto
-
-                    // Determina el ancho del tablero a mostrar, limitándolo al ancho de la consola
-                    int anchoTablero = Math.Min(ancho, anchoConsola);
-
-                    // Recorre cada celda del tablero para construir la representación en texto
-                    for (int y = 0; y < altura; y++)
+                    for (int j = 0; j < tablero.GetLength(1); j++)
                     {
-                        for (int x = 0; x < anchoTablero; x++)
-                        {
-                            s.Append(tablero[x, y]
-                                ? "|X|"
-                                : "___"); // Añade "|X|" para celdas vivas y "___" para celdas muertas
-                        }
-
-                        s.Append("\n"); // Añade una nueva línea después de cada fila
+                        s.Append(tablero[i, j] ? "|X|" : "___"); // Representa las celdas como 'X' o '_'
                     }
 
-                    Console.WriteLine(s.ToString()); // Imprime la representación del tablero en la consola
+                    s.Append("\n"); // Salto de línea para separar filas del tablero
                 }
 
-                Thread.Sleep(300); // Espera 300 ms antes de la próxima actualización
+                Console.Clear(); // Elimina lo que hay en la consola 
+                Console.WriteLine(s.ToString()); // Imprime el tablero
+                Thread.Sleep(300); // Pausa antes de la próxima impresión
             }
         }
     }
-}   
+}

@@ -63,6 +63,7 @@ Si todo ha funcionado correctamente, tu resultado debería verse algo similar a 
 ![GoL](./assets/console-gif-GoL.gif)
 
 ## Code Snippets
+
 A continuación se presentan fragmentos de código suelto (snippets) que podrás reutilizar en tu solución.
 
 > [!WARNING]
@@ -71,6 +72,7 @@ A continuación se presentan fragmentos de código suelto (snippets) que podrás
 > ser necesario modificarlo, deberan ser adaptados a tu solución propuesta.
 
 ### Lógica de juego
+
 El siguiente code snippet contiene la lógica necesaria para procesar una
 generación del juego.
 
